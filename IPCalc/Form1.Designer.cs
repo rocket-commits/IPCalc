@@ -48,6 +48,7 @@
             this.tbBroadcast = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.label15 = new System.Windows.Forms.Label();
             this.tbMask = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
             this.btnProcess = new System.Windows.Forms.Button();
@@ -59,15 +60,15 @@
             this.label8 = new System.Windows.Forms.Label();
             this.tabPage2 = new System.Windows.Forms.TabPage();
             this.tabPage3 = new System.Windows.Forms.TabPage();
+            this.btnConvert = new System.Windows.Forms.Button();
+            this.tbBinary = new System.Windows.Forms.TextBox();
+            this.tbHex = new System.Windows.Forms.TextBox();
             this.label14 = new System.Windows.Forms.Label();
             this.label13 = new System.Windows.Forms.Label();
             this.label12 = new System.Windows.Forms.Label();
             this.tbDecimal = new System.Windows.Forms.TextBox();
             this.bgWorkerV4 = new System.ComponentModel.BackgroundWorker();
-            this.tbHex = new System.Windows.Forms.TextBox();
-            this.tbBinary = new System.Windows.Forms.TextBox();
             this.bgWorkerConversion = new System.ComponentModel.BackgroundWorker();
-            this.btnConvert = new System.Windows.Forms.Button();
             this.tabControl1.SuspendLayout();
             this.tabPage1.SuspendLayout();
             this.tabPage3.SuspendLayout();
@@ -91,6 +92,7 @@
             this.tbFirstOctet.Name = "tbFirstOctet";
             this.tbFirstOctet.Size = new System.Drawing.Size(69, 20);
             this.tbFirstOctet.TabIndex = 1;
+            this.tbFirstOctet.TextChanged += new System.EventHandler(this.tbFirstOctet_TextChanged);
             // 
             // label2
             // 
@@ -107,6 +109,7 @@
             this.tbSecondOctet.Name = "tbSecondOctet";
             this.tbSecondOctet.Size = new System.Drawing.Size(69, 20);
             this.tbSecondOctet.TabIndex = 3;
+            this.tbSecondOctet.TextChanged += new System.EventHandler(this.tbSecondOctet_TextChanged);
             // 
             // tbThirdOctet
             // 
@@ -114,6 +117,7 @@
             this.tbThirdOctet.Name = "tbThirdOctet";
             this.tbThirdOctet.Size = new System.Drawing.Size(69, 20);
             this.tbThirdOctet.TabIndex = 4;
+            this.tbThirdOctet.TextChanged += new System.EventHandler(this.tbThirdOctet_TextChanged);
             // 
             // tbFourthOctet
             // 
@@ -121,14 +125,16 @@
             this.tbFourthOctet.Name = "tbFourthOctet";
             this.tbFourthOctet.Size = new System.Drawing.Size(69, 20);
             this.tbFourthOctet.TabIndex = 5;
+            this.tbFourthOctet.TextChanged += new System.EventHandler(this.tbFourthOctet_TextChanged);
             // 
             // cbMask
             // 
             this.cbMask.FormattingEnabled = true;
-            this.cbMask.Location = new System.Drawing.Point(409, 14);
+            this.cbMask.Location = new System.Drawing.Point(421, 14);
             this.cbMask.Name = "cbMask";
-            this.cbMask.Size = new System.Drawing.Size(57, 21);
+            this.cbMask.Size = new System.Drawing.Size(45, 21);
             this.cbMask.TabIndex = 6;
+            this.cbMask.SelectedIndexChanged += new System.EventHandler(this.cbMask_SelectedIndexChanged);
             // 
             // label3
             // 
@@ -224,6 +230,7 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.White;
+            this.tabPage1.Controls.Add(this.label15);
             this.tabPage1.Controls.Add(this.tbMask);
             this.tabPage1.Controls.Add(this.label11);
             this.tabPage1.Controls.Add(this.btnProcess);
@@ -255,6 +262,15 @@
             this.tabPage1.Size = new System.Drawing.Size(483, 341);
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "IPv4";
+            // 
+            // label15
+            // 
+            this.label15.AutoSize = true;
+            this.label15.Location = new System.Drawing.Point(406, 17);
+            this.label15.Name = "label15";
+            this.label15.Size = new System.Drawing.Size(12, 13);
+            this.label15.TabIndex = 25;
+            this.label15.Text = "/";
             // 
             // tbMask
             // 
@@ -357,6 +373,32 @@
             this.tabPage3.TabIndex = 2;
             this.tabPage3.Text = "Converter";
             // 
+            // btnConvert
+            // 
+            this.btnConvert.Location = new System.Drawing.Point(288, 127);
+            this.btnConvert.Name = "btnConvert";
+            this.btnConvert.Size = new System.Drawing.Size(75, 23);
+            this.btnConvert.TabIndex = 6;
+            this.btnConvert.Text = "Go";
+            this.btnConvert.UseVisualStyleBackColor = true;
+            this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
+            // 
+            // tbBinary
+            // 
+            this.tbBinary.Location = new System.Drawing.Point(176, 101);
+            this.tbBinary.Name = "tbBinary";
+            this.tbBinary.Size = new System.Drawing.Size(187, 20);
+            this.tbBinary.TabIndex = 5;
+            this.tbBinary.TextChanged += new System.EventHandler(this.tbBinary_TextChanged);
+            // 
+            // tbHex
+            // 
+            this.tbHex.Location = new System.Drawing.Point(176, 75);
+            this.tbHex.Name = "tbHex";
+            this.tbHex.Size = new System.Drawing.Size(187, 20);
+            this.tbHex.TabIndex = 4;
+            this.tbHex.TextChanged += new System.EventHandler(this.tbHex_TextChanged);
+            // 
             // label14
             // 
             this.label14.AutoSize = true;
@@ -397,36 +439,10 @@
             this.bgWorkerV4.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgWorkerV4_DoWork);
             this.bgWorkerV4.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgWorkerV4_RunWorkerCompleted);
             // 
-            // tbHex
-            // 
-            this.tbHex.Location = new System.Drawing.Point(176, 75);
-            this.tbHex.Name = "tbHex";
-            this.tbHex.Size = new System.Drawing.Size(187, 20);
-            this.tbHex.TabIndex = 4;
-            this.tbHex.TextChanged += new System.EventHandler(this.tbHex_TextChanged);
-            // 
-            // tbBinary
-            // 
-            this.tbBinary.Location = new System.Drawing.Point(176, 101);
-            this.tbBinary.Name = "tbBinary";
-            this.tbBinary.Size = new System.Drawing.Size(187, 20);
-            this.tbBinary.TabIndex = 5;
-            this.tbBinary.TextChanged += new System.EventHandler(this.tbBinary_TextChanged);
-            // 
             // bgWorkerConversion
             // 
             this.bgWorkerConversion.DoWork += new System.ComponentModel.DoWorkEventHandler(this.bgWorkerConversion_DoWork);
             this.bgWorkerConversion.RunWorkerCompleted += new System.ComponentModel.RunWorkerCompletedEventHandler(this.bgWorkerConversion_RunWorkerCompleted);
-            // 
-            // btnConvert
-            // 
-            this.btnConvert.Location = new System.Drawing.Point(288, 127);
-            this.btnConvert.Name = "btnConvert";
-            this.btnConvert.Size = new System.Drawing.Size(75, 23);
-            this.btnConvert.TabIndex = 6;
-            this.btnConvert.Text = "Go";
-            this.btnConvert.UseVisualStyleBackColor = true;
-            this.btnConvert.Click += new System.EventHandler(this.btnConvert_Click);
             // 
             // Form1
             // 
@@ -492,6 +508,7 @@
         private System.Windows.Forms.TextBox tbBinary;
         private System.Windows.Forms.TextBox tbHex;
         private System.ComponentModel.BackgroundWorker bgWorkerConversion;
+        private System.Windows.Forms.Label label15;
     }
 }
 
