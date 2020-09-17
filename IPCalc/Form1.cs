@@ -29,6 +29,8 @@ namespace IPCalc
             cbMask.DisplayMember = "Slash";
             cbMask.SelectedIndex = 0;
         }
+        public static string ipMin { get; set; }
+        public static string ipMax { get; set; }
         public static string fullBrodcastDec { get; set; }
         public static string fullBrodcastBinary { get; set; }
         public static string fullidDec { get; set; }
@@ -105,7 +107,7 @@ namespace IPCalc
                 octet = concat.PadRight(8, '0');
                 full3 = "11111111.11111111." + octet + ".00000000";
                 decNum = Convert.ToInt32(octet, 2);
-                fulldec = $"225.255.{decNum}.0";
+                fulldec = $"255.255.{decNum}.0";
                 data3.Slash = $"{i}";
                 data3.Decimal = $"{fulldec}";
                 data3.Binaa = full3;
@@ -121,7 +123,7 @@ namespace IPCalc
                 octet = concat.PadRight(8, '0');
                 full4 = "11111111.11111111.11111111." + octet;
                 decNum = Convert.ToInt32(octet, 2);
-                fulldec = $"225.255.255.{decNum}";
+                fulldec = $"255.255.255.{decNum}";
                 data4.Slash = $"{i}";
                 data4.Decimal = $"{fulldec}";
                 data4.Binaa = full4;
@@ -207,27 +209,119 @@ namespace IPCalc
             int outputIDTwo = secondOctet & ipMask2;
             int outputIDThree = thirdOctet & ipMask3;
             int outputIDFour = fourthOctet & ipMask4;
-            fullidDec = $"{outputIDOne}.{outputIDTwo}.{outputIDThree}.{outputIDFour}"; 
             string idBOne = Convert.ToString(outputIDOne, toBase: 2).PadLeft(8, '0');
             string idBTwo = Convert.ToString(outputIDTwo, toBase: 2).PadLeft(8, '0');
             string idBThree = Convert.ToString(outputIDThree, toBase: 2).PadLeft(8, '0');
             string idBFour = Convert.ToString(outputIDFour, toBase: 2).PadLeft(8, '0');
             fullidBinary = $"{idBOne}.{idBTwo}.{idBThree}.{idBFour}";
-            //Getting the Broadcast IP
+            fullidDec = $"{outputIDOne}.{outputIDTwo}.{outputIDThree}.{outputIDFour}"; 
+            //Getting the Broadcast IP           
             int outputBOne = firstOctet | ~ipMask1;
             int outputBTwo = secondOctet | ~ipMask2;
             int outputBThree = thirdOctet | ~ipMask3;
             int outputBFour = fourthOctet | ~ipMask4;
             var bco1 = BitConverter.GetBytes(outputBOne);
+            int bcoi1 = Convert.ToInt32(bco1[0]);
             var bco2 = BitConverter.GetBytes(outputBTwo);
+            int bcoi2 = Convert.ToInt32(bco2[0]);
             var bco3 = BitConverter.GetBytes(outputBThree);
+            int bcoi3 = Convert.ToInt32(bco3[0]);
             var bco4 = BitConverter.GetBytes(outputBFour);
-            string bc1 = Convert.ToString(Convert.ToInt32(bco1[0]), toBase: 2).PadLeft(8, '0');
-            string bc2 = Convert.ToString(Convert.ToInt32(bco2[0]), toBase: 2).PadLeft(8, '0');
-            string bc3 = Convert.ToString(Convert.ToInt32(bco3[0]), toBase: 2).PadLeft(8, '0');
-            string bc4 = Convert.ToString(Convert.ToInt32(bco4[0]), toBase: 2).PadLeft(8, '0');
+            int bcoi4 = Convert.ToInt32(bco4[0]);
+            string bc1 = Convert.ToString(Convert.ToInt32(bcoi1), toBase: 2).PadLeft(8, '0');
+            string bc2 = Convert.ToString(Convert.ToInt32(bcoi2), toBase: 2).PadLeft(8, '0');
+            string bc3 = Convert.ToString(Convert.ToInt32(bcoi3), toBase: 2).PadLeft(8, '0');
+            string bc4 = Convert.ToString(Convert.ToInt32(bcoi4), toBase: 2).PadLeft(8, '0');
             fullBrodcastBinary = $"{bc1}.{bc2}.{bc3}.{bc4}";
-            fullBrodcastDec = $"{bco1[0]}.{bco2[0]}.{bco3[0]}.{bco4[0]}";
+            fullBrodcastDec = $"{bcoi1}.{bcoi2}.{bcoi3}.{bcoi4}";
+            //Comparing the data
+            bool sameOne = false;
+            bool sameTwo = false;
+            bool sameThree = false;
+            bool sameFour = false;
+            int resultOne;
+            int resultTwo;
+            int resultThree;
+            int resultFour;
+            int resultOneB;
+            int resultTwoB;
+            int resultThreeB;
+            int resultFourB;
+            if (firstOctet == outputIDOne)
+            {
+                sameOne = true;
+                resultOne = firstOctet;
+                resultOneB = firstOctet;
+            }
+            else
+            {
+                if (outputIDOne != 0)
+                {
+                    resultOne = firstOctet - outputIDOne;
+                    resultOneB = outputIDOne + 1;
+                }
+                else
+                {
+                    resultOneB = outputIDOne;
+                }
+            }
+            if (secondOctet == outputIDTwo)
+            {
+                sameTwo = true;
+                resultTwo = secondOctet;
+                resultTwoB = secondOctet;
+            }
+            else
+            {
+                if (outputIDTwo != 0)
+                {
+                    resultTwo = secondOctet - outputIDTwo;
+                    resultTwoB = outputIDTwo + 1;
+                }
+                else
+                {
+                    resultTwoB = outputIDTwo;
+                }
+            }
+            if (thirdOctet == outputIDThree)
+            {
+                sameThree = true;
+                resultThree = thirdOctet;
+                resultThreeB = thirdOctet;
+            }
+            else
+            {
+                if (outputIDThree != 0)
+                {
+                    resultThree = thirdOctet - outputIDThree;
+                    resultThreeB = outputIDThree + 1;
+                }
+                else
+                {
+                    resultThreeB = outputIDThree;
+                }
+            }
+            if (fourthOctet == outputIDFour)
+            {
+                sameFour = true;
+                resultFour = fourthOctet;
+                resultFourB = fourthOctet;
+            }
+            else
+            {
+                if (outputIDFour != 0)
+                {
+                    resultFour = fourthOctet - outputIDFour;
+                    resultFourB = outputIDFour + 1;
+                }
+                else
+                {
+                    resultFourB = outputIDFour;
+                }
+            }
+            //Getting the Min IP
+            ipMin = $"{resultOneB}.{resultTwoB}.{resultThreeB}.{resultFourB}";
+            //Getting the Max IP
 
         }
 
@@ -237,6 +331,7 @@ namespace IPCalc
             tbIDIPBinary.Text = fullidBinary;
             tbBroadcast.Text = fullBrodcastDec;
             tbBroadcastB.Text = fullBrodcastBinary;
+            tbFirstIP.Text = ipMin;
         }
 
         private void tbDecimal_TextChanged(object sender, EventArgs e)
