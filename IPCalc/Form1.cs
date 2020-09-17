@@ -19,7 +19,8 @@ namespace IPCalc
             secondOctetBin = "00000000";
             thirdOctetBin = "00000000";
             fourthOctetBin = "00000000";
-            tbIPBinary.Text = $"{firstOctetBin}.{secondOctetBin}.{thirdOctetBin}.{fourthOctetBin}";
+            ipBinary = $"{firstOctetBin}.{secondOctetBin}.{thirdOctetBin}.{fourthOctetBin}";
+            tbIPBinary.Text = ipBinary;
             decNumber = null;
             hexNumber = null;
             binNumber = null;
@@ -28,14 +29,24 @@ namespace IPCalc
             cbMask.DisplayMember = "Slash";
             cbMask.SelectedIndex = 0;
         }
+        public static string fullBrodcastDec { get; set; }
+        public static string fullBrodcastBinary { get; set; }
+        public static string fullidDec { get; set; }
+        public static string fullidBinary { get; set; }
+        public static string[] values { get; set; }
+        public static int ipMask1 { get; set; }
+        public static int ipMask2 { get; set; }
+        public static int ipMask3 { get; set; }
+        public static int ipMask4 { get; set; }
+        public static string maskIP { get; set; }
         public static string ipBinary { get; set; }
-        public static string firstOctet { get; set; }
+        public static int firstOctet { get; set; }
         public static string firstOctetBin { get; set; }
-        public static string secondOctet { get; set; }
+        public static int secondOctet { get; set; }
         public static string secondOctetBin { get; set; }
-        public static string thirdOctet { get; set; }
+        public static int thirdOctet { get; set; }
         public static string thirdOctetBin { get; set; }
-        public static string fourthOctet { get; set; }
+        public static int fourthOctet { get; set; }
         public static string fourthOctetBin { get; set; }
         public static string lastChanged { get; set; }
         public static int? decNumber { get; set; }
@@ -136,7 +147,10 @@ namespace IPCalc
 
         private void btnProcess_Click(object sender, EventArgs e)
         {
-
+            if (!bgWorkerV4.IsBusy)
+            {
+                bgWorkerV4.RunWorkerAsync();
+            }
         }
 
         private void bgWorkerConversion_DoWork(object sender, DoWorkEventArgs e)
@@ -188,12 +202,41 @@ namespace IPCalc
 
         private void bgWorkerV4_DoWork(object sender, DoWorkEventArgs e)
         {
+            //Getting the ID IP
+            int outputIDOne = firstOctet & ipMask1;
+            int outputIDTwo = secondOctet & ipMask2;
+            int outputIDThree = thirdOctet & ipMask3;
+            int outputIDFour = fourthOctet & ipMask4;
+            fullidDec = $"{outputIDOne}.{outputIDTwo}.{outputIDThree}.{outputIDFour}"; 
+            string idBOne = Convert.ToString(outputIDOne, toBase: 2).PadLeft(8, '0');
+            string idBTwo = Convert.ToString(outputIDTwo, toBase: 2).PadLeft(8, '0');
+            string idBThree = Convert.ToString(outputIDThree, toBase: 2).PadLeft(8, '0');
+            string idBFour = Convert.ToString(outputIDFour, toBase: 2).PadLeft(8, '0');
+            fullidBinary = $"{idBOne}.{idBTwo}.{idBThree}.{idBFour}";
+            //Getting the Broadcast IP
+            int outputBOne = firstOctet | ~ipMask1;
+            int outputBTwo = secondOctet | ~ipMask2;
+            int outputBThree = thirdOctet | ~ipMask3;
+            int outputBFour = fourthOctet | ~ipMask4;
+            var bco1 = BitConverter.GetBytes(outputBOne);
+            var bco2 = BitConverter.GetBytes(outputBTwo);
+            var bco3 = BitConverter.GetBytes(outputBThree);
+            var bco4 = BitConverter.GetBytes(outputBFour);
+            string bc1 = Convert.ToString(Convert.ToInt32(bco1[0]), toBase: 2).PadLeft(8, '0');
+            string bc2 = Convert.ToString(Convert.ToInt32(bco2[0]), toBase: 2).PadLeft(8, '0');
+            string bc3 = Convert.ToString(Convert.ToInt32(bco3[0]), toBase: 2).PadLeft(8, '0');
+            string bc4 = Convert.ToString(Convert.ToInt32(bco4[0]), toBase: 2).PadLeft(8, '0');
+            fullBrodcastBinary = $"{bc1}.{bc2}.{bc3}.{bc4}";
+            fullBrodcastDec = $"{bco1[0]}.{bco2[0]}.{bco3[0]}.{bco4[0]}";
 
         }
 
         private void bgWorkerV4_RunWorkerCompleted(object sender, RunWorkerCompletedEventArgs e)
         {
-
+            tbIDIP.Text = fullidDec;
+            tbIDIPBinary.Text = fullidBinary;
+            tbBroadcast.Text = fullBrodcastDec;
+            tbBroadcastB.Text = fullBrodcastBinary;
         }
 
         private void tbDecimal_TextChanged(object sender, EventArgs e)
@@ -240,69 +283,84 @@ namespace IPCalc
 
         private void cbMask_SelectedIndexChanged(object sender, EventArgs e)
         {
-            int selected = cbMask.SelectedIndex;            
+            int selected = cbMask.SelectedIndex;
             tbMask.Text = (subnetMasks[selected].Decimal).ToString();
-            tbMaskBinary.Text = (subnetMasks[selected].Binaa).ToString(); ;
+            tbMaskBinary.Text = (subnetMasks[selected].Binaa).ToString();
+            maskIP = (subnetMasks[selected].Decimal).ToString();
+            values = maskIP.Split('.');
+            ipMask1 = Convert.ToInt32(values[0]);
+            ipMask2 = Convert.ToInt32(values[1]);
+            ipMask3 = Convert.ToInt32(values[2]);
+            ipMask4 = Convert.ToInt32(values[3]);
         }
 
         private void tbFirstOctet_TextChanged(object sender, EventArgs e)
         {
-            firstOctet = tbFirstOctet.Text;
-            if (!String.IsNullOrEmpty(firstOctet))
+            if (!String.IsNullOrEmpty(tbFirstOctet.Text))
             {
-                firstOctetBin = Convert.ToString(Convert.ToInt32(firstOctet), 2);
+                firstOctet = Convert.ToInt32(tbFirstOctet.Text);
+                firstOctetBin = Convert.ToString(firstOctet, 2);
                 firstOctetBin = firstOctetBin.PadLeft(8, '0');
             }
             else
             {
+                firstOctet = 0;
                 firstOctetBin = "00000000";
             }
-            tbIPBinary.Text = $"{firstOctetBin}.{secondOctetBin}.{thirdOctetBin}.{fourthOctetBin}";
+            ipBinary = $"{firstOctetBin}.{secondOctetBin}.{thirdOctetBin}.{fourthOctetBin}";
+            tbIPBinary.Text = ipBinary;
         }
 
         private void tbSecondOctet_TextChanged(object sender, EventArgs e)
         {
-            secondOctet = tbSecondOctet.Text;
-            if (!String.IsNullOrEmpty(secondOctet))
+            if (!String.IsNullOrEmpty(tbSecondOctet.Text))
             {
-                secondOctetBin = Convert.ToString(Convert.ToInt32(secondOctet), 2);
+                secondOctet = Convert.ToInt32(tbSecondOctet.Text);
+                secondOctetBin = Convert.ToString(secondOctet, 2);
                 secondOctetBin = secondOctetBin.PadLeft(8, '0');
             }
             else
             {
+                secondOctet = 0;
                 secondOctetBin = "00000000";
             }
-            tbIPBinary.Text = $"{firstOctetBin}.{secondOctetBin}.{thirdOctetBin}.{fourthOctetBin}";
+            ipBinary = $"{firstOctetBin}.{secondOctetBin}.{thirdOctetBin}.{fourthOctetBin}";
+            tbIPBinary.Text = ipBinary;
         }
 
         private void tbThirdOctet_TextChanged(object sender, EventArgs e)
         {
-            thirdOctet = tbThirdOctet.Text;
-            if (!String.IsNullOrEmpty(thirdOctet))
+            if (!String.IsNullOrEmpty(tbThirdOctet.Text))
             {
-                thirdOctetBin = Convert.ToString(Convert.ToInt32(thirdOctet), 2);
+                thirdOctet = Convert.ToInt32(tbThirdOctet.Text);
+                thirdOctetBin = Convert.ToString(thirdOctet, 2);
                 thirdOctetBin = thirdOctetBin.PadLeft(8, '0');
             }
             else
             {
+                thirdOctet = 0;
                 thirdOctetBin = "00000000";
             }
-            tbIPBinary.Text = $"{firstOctetBin}.{secondOctetBin}.{thirdOctetBin}.{fourthOctetBin}";
+            ipBinary = $"{firstOctetBin}.{secondOctetBin}.{thirdOctetBin}.{fourthOctetBin}";
+            tbIPBinary.Text = ipBinary;
         }
 
         private void tbFourthOctet_TextChanged(object sender, EventArgs e)
         {
-            fourthOctet = tbFourthOctet.Text;
-            if (!String.IsNullOrEmpty(fourthOctet))
+            if (!String.IsNullOrEmpty(tbFourthOctet.Text))
             {
-                fourthOctetBin = Convert.ToString(Convert.ToInt32(fourthOctet), 2);
+                fourthOctet = Convert.ToInt32(tbFourthOctet.Text);
+                fourthOctetBin = Convert.ToString(fourthOctet, 2);
                 fourthOctetBin = fourthOctetBin.PadLeft(8, '0');
             }
             else
             {
+                fourthOctet = 0;
                 fourthOctetBin = "00000000";
             }
-            tbIPBinary.Text = $"{firstOctetBin}.{secondOctetBin}.{thirdOctetBin}.{fourthOctetBin}";
+            ipBinary = $"{firstOctetBin}.{secondOctetBin}.{thirdOctetBin}.{fourthOctetBin}";
+            tbIPBinary.Text = ipBinary;
         }
+
     }
 }

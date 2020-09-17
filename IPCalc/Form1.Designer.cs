@@ -48,6 +48,8 @@
             this.tbBroadcast = new System.Windows.Forms.TextBox();
             this.tabControl1 = new System.Windows.Forms.TabControl();
             this.tabPage1 = new System.Windows.Forms.TabPage();
+            this.tbBroadcastB = new System.Windows.Forms.TextBox();
+            this.label16 = new System.Windows.Forms.Label();
             this.label15 = new System.Windows.Forms.Label();
             this.tbMask = new System.Windows.Forms.TextBox();
             this.label11 = new System.Windows.Forms.Label();
@@ -182,9 +184,9 @@
             this.label6.AutoSize = true;
             this.label6.Location = new System.Drawing.Point(33, 147);
             this.label6.Name = "label6";
-            this.label6.Size = new System.Drawing.Size(63, 13);
+            this.label6.Size = new System.Drawing.Size(62, 13);
             this.label6.TabIndex = 12;
-            this.label6.Text = "ID IP Binary";
+            this.label6.Text = "ID IP binary";
             // 
             // tbIDIP
             // 
@@ -230,6 +232,8 @@
             // tabPage1
             // 
             this.tabPage1.BackColor = System.Drawing.Color.White;
+            this.tabPage1.Controls.Add(this.tbBroadcastB);
+            this.tabPage1.Controls.Add(this.label16);
             this.tabPage1.Controls.Add(this.label15);
             this.tabPage1.Controls.Add(this.tbMask);
             this.tabPage1.Controls.Add(this.label11);
@@ -263,6 +267,22 @@
             this.tabPage1.TabIndex = 0;
             this.tabPage1.Text = "IPv4";
             // 
+            // tbBroadcastB
+            // 
+            this.tbBroadcastB.Location = new System.Drawing.Point(109, 196);
+            this.tbBroadcastB.Name = "tbBroadcastB";
+            this.tbBroadcastB.Size = new System.Drawing.Size(357, 20);
+            this.tbBroadcastB.TabIndex = 27;
+            // 
+            // label16
+            // 
+            this.label16.AutoSize = true;
+            this.label16.Location = new System.Drawing.Point(16, 199);
+            this.label16.Name = "label16";
+            this.label16.Size = new System.Drawing.Size(79, 13);
+            this.label16.TabIndex = 26;
+            this.label16.Text = "BCast IP binary";
+            // 
             // label15
             // 
             this.label15.AutoSize = true;
@@ -290,7 +310,7 @@
             // 
             // btnProcess
             // 
-            this.btnProcess.Location = new System.Drawing.Point(391, 295);
+            this.btnProcess.Location = new System.Drawing.Point(391, 307);
             this.btnProcess.Name = "btnProcess";
             this.btnProcess.Size = new System.Drawing.Size(75, 23);
             this.btnProcess.TabIndex = 18;
@@ -300,7 +320,7 @@
             // 
             // tbNumberHosts
             // 
-            this.tbNumberHosts.Location = new System.Drawing.Point(109, 248);
+            this.tbNumberHosts.Location = new System.Drawing.Point(109, 274);
             this.tbNumberHosts.Name = "tbNumberHosts";
             this.tbNumberHosts.Size = new System.Drawing.Size(357, 20);
             this.tbNumberHosts.TabIndex = 22;
@@ -308,7 +328,7 @@
             // label10
             // 
             this.label10.AutoSize = true;
-            this.label10.Location = new System.Drawing.Point(17, 251);
+            this.label10.Location = new System.Drawing.Point(17, 277);
             this.label10.Name = "label10";
             this.label10.Size = new System.Drawing.Size(79, 13);
             this.label10.TabIndex = 21;
@@ -316,7 +336,7 @@
             // 
             // tbLastIP
             // 
-            this.tbLastIP.Location = new System.Drawing.Point(109, 222);
+            this.tbLastIP.Location = new System.Drawing.Point(109, 248);
             this.tbLastIP.Name = "tbLastIP";
             this.tbLastIP.Size = new System.Drawing.Size(357, 20);
             this.tbLastIP.TabIndex = 20;
@@ -324,7 +344,7 @@
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(56, 225);
+            this.label9.Location = new System.Drawing.Point(56, 251);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(40, 13);
             this.label9.TabIndex = 19;
@@ -332,7 +352,7 @@
             // 
             // tbFirstIP
             // 
-            this.tbFirstIP.Location = new System.Drawing.Point(109, 196);
+            this.tbFirstIP.Location = new System.Drawing.Point(109, 222);
             this.tbFirstIP.Name = "tbFirstIP";
             this.tbFirstIP.Size = new System.Drawing.Size(357, 20);
             this.tbFirstIP.TabIndex = 18;
@@ -340,7 +360,7 @@
             // label8
             // 
             this.label8.AutoSize = true;
-            this.label8.Location = new System.Drawing.Point(57, 199);
+            this.label8.Location = new System.Drawing.Point(57, 225);
             this.label8.Name = "label8";
             this.label8.Size = new System.Drawing.Size(39, 13);
             this.label8.TabIndex = 17;
@@ -449,12 +469,15 @@
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackgroundImage = global::IPCalc.Properties.Resources.geometric_1732847_640;
-            this.ClientSize = new System.Drawing.Size(524, 415);
+            this.ClientSize = new System.Drawing.Size(524, 424);
             this.Controls.Add(this.tabControl1);
             this.Controls.Add(this.label1);
             this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
             this.MaximizeBox = false;
+            this.MaximumSize = new System.Drawing.Size(540, 463);
+            this.MinimumSize = new System.Drawing.Size(540, 463);
             this.Name = "Form1";
+            this.SizeGripStyle = System.Windows.Forms.SizeGripStyle.Hide;
             this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
             this.Text = "IP Calculator";
             this.tabControl1.ResumeLayout(false);
@@ -509,6 +532,8 @@
         private System.Windows.Forms.TextBox tbHex;
         private System.ComponentModel.BackgroundWorker bgWorkerConversion;
         private System.Windows.Forms.Label label15;
+        private System.Windows.Forms.TextBox tbBroadcastB;
+        private System.Windows.Forms.Label label16;
     }
 }
 

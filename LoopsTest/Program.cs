@@ -15,8 +15,8 @@ namespace LoopsTest
     {
         static void Main(string[] args)
         {
-            int ipOctet = 25;
-            int maskOctet = 192;
+            int ipOctet = 192;
+            int maskOctet = 255;
             //id
             int output = ipOctet & maskOctet;
             string realOctetBin = Convert.ToString(output, toBase: 2);
