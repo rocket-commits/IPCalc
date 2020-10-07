@@ -14,7 +14,7 @@ namespace IPCalc
     {
         public Form1()
         {
-            //Hello world!
+            
             InitializeComponent();
             firstOctetBin = "00000000";
             secondOctetBin = "00000000";
